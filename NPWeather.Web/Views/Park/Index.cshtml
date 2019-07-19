@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Capstone.Web.Models.Park>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    body{
+        background-color: #b3a481;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .park {
+        display: grid;
+    }
+
+    .img {
+        margin: 5px;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    .details {
+        padding-left: 15px;
+        padding-right: 15px;
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+
+    .centeredPanel {
+        clear: both;
+        display: flex;
+        width: 90%;
+        vertical-align: top;
+        min-height: initial;
+        background-color: #a8c29f;
+        border-radius: 7px;
+        margin: 20px auto;
+    }
+
+</style>
+
+@foreach (Park park in Model)
+{
+    string img = park.ParkCode + ".jpg";
+
+    <div class="centeredPanel">
+        <div class="img">
+            <a asp-controller="Park" asp-action="Detail" asp-route-id="@park.ParkCode">
+                <img src="~/img/@img" />
+            </a>
+        </div>
+        <div class="details">
+            <a asp-controller="Park" asp-action="Detail" asp-route-id="@park.ParkCode">
+                <h2>@park.ParkName</h2>
+            </a>
+
+            <p>@park.Description</p>
+        </div>
+    </div>
+
+
+}

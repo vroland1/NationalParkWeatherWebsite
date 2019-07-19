@@ -1,0 +1,73 @@
+﻿@model IList<Park>
+
+@{
+    ViewData["Title"] = "RankedResults";
+}
+
+<style>
+
+    body {
+        background-color: #b3a481;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .park {
+        display: grid;
+    }
+
+    .img {
+        margin: 5px;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    .details {
+        padding-left: 15px;
+        padding-right: 15px;
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+
+    .centeredPanel {
+        clear: both;
+        display: inline-grid;
+        width: 60%;
+        vertical-align: top;
+        min-height: initial;
+        background-color: oldlace;
+        border-radius: 7px;
+        margin: 10px auto;
+    }
+
+        .centeredPanel h5 {
+            color: #000000;
+            text-align: left;
+            padding-top: 15px;
+        }
+
+        .centeredPanel p {
+            color: #000;
+            text-align: left;
+        }
+</style>
+
+<h2>Favorite Parks</h2>
+@foreach (Park park in Model)
+{
+    string img = park.ParkCode + ".jpg";
+
+    <div class="centeredPanel">
+        <div class="img">
+            <a asp-controller="Park" asp-action="Detail" asp-route-id="@park.ParkCode">
+                <img src="~/img/@img" style="width:33%" />
+            </a>
+        </div>
+        <div class="details">
+            <h5>@park.ParkName currently has @park.SurveyCount vote(s).</h5>
+        </div>
+    </div>
+}
+
+<div>
+    <a asp-action="Index">Back to Home</a>
+</div>

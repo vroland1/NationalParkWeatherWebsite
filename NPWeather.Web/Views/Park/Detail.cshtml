@@ -1,0 +1,325 @@
+﻿@model Capstone.Web.Models.Park
+
+@{
+    ViewData["Title"] = "Detail";
+    string img = Model.ParkCode + ".jpg";
+}
+
+<style>
+    body {
+        background-color: #b3a481;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        text-align: center;
+    }
+
+    p {
+        display: block;
+        margin: auto;
+    }
+
+    h2{
+        padding-bottom: 1em;
+        margin: auto;
+    }
+
+    img{
+        display: block;
+    }
+
+    header{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #quote {
+        font-family: Georgia, Times, "Times New Roman", serif;
+        font-size: 20px;
+        font-style: italic;
+        padding: 1em;
+    }
+
+    dd{
+        text-align: left;
+    }
+
+    .content {
+        margin: 5%;
+    }
+
+    .centerpanel {
+        clear: both;
+        display: block;
+        width: 90%;
+        vertical-align: top;
+        min-height: 450px;
+        background-color: #a8c29f;
+        border-radius: 7px;
+        border: 1px double black;
+        margin: 20px auto;
+    }
+
+    section.weather {
+        clear: both;
+        justify-content: center;
+        vertical-align: top;
+        background-color: oldlace;
+        border-radius: 7px;
+        border: 1px solid black;
+    }
+
+    .weather-heading{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: 2em;
+        margin-right: 2em;
+        padding-top: 2em;
+        text-align: left;
+    }
+
+    .weather-heading > h2 {
+        margin: 0;
+    }
+
+    .weekforecast {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin: 2em;
+    }
+
+    #today {
+        background-color: #FFF;
+        border-radius: 7px;
+        padding: 1em;
+    }
+
+    #today > img {
+        width: 150px;
+    }
+
+    img#weather{
+        width: 100px;
+    }
+
+    .dayforecast {
+        display: inline-flex;
+        flex-direction: column;
+        background-color: #FFF;
+        border-radius: 7px;
+        padding: 1em;
+        margin-left: 2em;
+        margin-top: 2em;
+    }  
+</style>
+
+<section class="centerpanel">
+    <div class="content">
+        <div>
+            <header>
+                <h2>@Model.ParkName</h2>
+                <img src="~/img/@img" />
+                <p id="quote">"@Html.DisplayFor(model => model.Quote)" - @Html.DisplayFor(model => model.QuoteSource)</p>
+            </header>
+            
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.State)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.State), USA
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Acreage)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Acreage) acres
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Elevation)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Elevation) ft.
+                </dd>
+                <dt>
+                    Miles Of Trails
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.MilesOfTrail) miles
+                </dd>
+                <dt>
+                    Number Of Campsites
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NumberOfCampsites)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Climate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Climate)
+                </dd>
+                <dt>
+                    Year Founded
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.YearFounded)
+                </dd>
+                <dt>
+                    Annual Visitors
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.AnnualVisitors)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt>
+                    Entry Fee
+                </dt>
+                <dd>
+                    $@Html.DisplayFor(model => model.EntryFee)
+                </dd>
+                <dt>
+                    Animal Species
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.AnimalSpecies)
+                </dd>
+            </dl>
+        </div>
+        <section class="weather">
+            <div class="weather-heading">
+                <h2>Weather Report</h2>
+
+                <form method="get" asp-action="toggle">
+                    @if (ViewData["scale"] as string == "Fahrenheit")
+                    {
+                        <label>Fahrenheit</label><input type="radio" name="scale" value="Fahrenheit" checked /><br />
+                    }
+                    else
+                    {
+                        <label>Fahrenheit</label><input type="radio" name="scale" value="Fahrenheit" /><br />
+                    }
+
+                    @if (ViewData["scale"] as string == "Celsius")
+                    {
+                        <label>Celsius</label><input type="radio" name="scale" value="Celsius" checked /><br />
+                    }
+                    else
+                    {
+                        <label>Celsius</label><input type="radio" name="scale" value="Celsius" /><br />
+                    }
+
+                    <input type="hidden" name="id" value="@Model.ParkCode" />
+                    <input type="submit" value="Change Metric" />
+                </form>
+            </div>
+            
+            <div class="weekforecast">
+                <div id="today">
+                    <h3>Today</h3>
+
+                    @{
+                        string image = "";
+                    }
+
+                    @if (ViewBag.ForecastList[0].Forecast == "partly cloudy")
+                    {
+                        image = "partlyCloudy.png";
+                    }
+                    else
+                    {
+                        image = ViewBag.ForecastList[0].Forecast + ".png";
+                    }
+
+                        <img src="~/img/@image" />
+
+                    <div id="temperature">
+                        @if (ViewData["scale"] as string == "Fahrenheit")
+                        {
+                            <p>High: @ViewBag.ForecastList[0].HighTempF</p>
+                            <p>Low: @ViewBag.ForecastList[0].LowTempF</p>
+                        }
+                        else if (ViewData["scale"] as string == "Celsius")
+                        {
+                            <p>High: @ViewBag.ForecastList[0].HighTempC</p>
+                            <p>Low: @ViewBag.ForecastList[0].LowTempC</p>
+                        }
+                    </div>
+
+                    <div id="recommendations">
+                        @if (ViewBag.ForecastList[0].Forecast == "snow")
+                        {
+                            <p>Pack snowshoes!</p>
+                        }
+
+                        @if (ViewBag.ForecastList[0].Forecast == "rain")
+                        {
+                            <p>Pack rain gear!</p>
+                        }
+
+                        @if (ViewBag.ForecastList[0].Forecast == "thunderstorms")
+                        {
+                            <p>Seek shelter, avoid exposed ridges.</p>
+                        }
+
+                        @if (ViewBag.ForecastList[0].Forecast == "thunderstorms")
+                        {
+                            <p>Wear sunscreen!</p>
+                        }
+
+                        @if (ViewBag.ForecastList[0].HighTempF > 75)
+                        {
+                            <p>Bring extra water!</p>
+                        }
+
+                        @if (Math.Abs(ViewBag.ForecastList[0].HighTempF - ViewBag.ForecastList[0].LowTempF) > 20)
+                        {
+                            <p>Wear breathable layers!</p>
+                        }
+
+                        @if (ViewBag.ForecastList[0].LowTempF < 20)
+                        {
+                            <p>Warning: extreme cold!</p>
+                        }
+                    </div>
+                </div>
+
+                <div class="restofweek">
+                    @for (int i = 1; i < ViewBag.ForecastList.Count; i++)
+                    {
+                        image = (ViewBag.ForecastList[i].Forecast == "partly cloudy") ? "partlyCloudy.png" : ViewBag.ForecastList[i].Forecast + ".png";
+
+                        <div class="dayforecast">
+                                <img id="weather" src="~/img/@image" />
+
+                            @if (ViewData["scale"] as string == "Fahrenheit")
+                            {
+                                <p>High: @ViewBag.ForecastList[i].HighTempF</p>
+                                <p>Low: @ViewBag.ForecastList[i].LowTempF</p>
+                            }
+                            else if (ViewData["scale"] as string == "Celsius")
+                            {
+                                <p>High: @ViewBag.ForecastList[i].HighTempC</p>
+                                <p>Low: @ViewBag.ForecastList[i].LowTempC</p>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+
+<div>
+    <a asp-action="Index">Back to Home</a>
+</div>
+
+
+

@@ -1,0 +1,66 @@
+﻿@model Capstone.Web.Models.Survey
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+
+    body {
+        background-color: #b3a481;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .centeredPanel {
+        clear: both;
+        display: flex;
+        width: 90%;
+        vertical-align: top;
+        min-height: initial;
+        background-color: oldlace;
+        padding-top: 20px;
+        border-radius: 7px;
+        margin: 20px;
+    }
+</style>
+
+<div style="display: flex">
+    <h2><span> Survey </span></h2>
+    <img src="~/img/backpack.png" style="width:5%; padding-left: 10px" />
+</div>
+<hr />
+<div class="centeredPanel">
+    <div class="col-md-4">
+        <form asp-controller="survey" asp-action="RankedResults" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ParkCode" class="control-label"></label>
+                <select asp-for="ParkCode" asp-items="ViewBag.NamesAndCodes"></select>
+                <span asp-validation-for="ParkCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <select asp-for="State" asp-items="ViewBag.States"></select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityLevel" class="control-label"></label>
+                <select asp-for="ActivityLevel" asp-items="ViewBag.Activity"></select>
+                <span asp-validation-for="ActivityLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit Survey" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <span><a asp-controller="Park" asp-action="Index">Back to Home</a></span> ||
+    <span><a asp-controller="Survey" asp-action="RankedResults">See Current Results</a></span>
+</div>
